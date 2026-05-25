@@ -19,9 +19,9 @@
                (:module :src-includes
                 :pathname "src/")
                (:module :torch-root-includes
-                :pathname "src/lib/torch-bin/include/")
+                :pathname "libtorch/include/")
                (:module :torch-includes
-                :pathname "src/lib/torch-bin/include/torch/csrc/api/include/")))
+                :pathname "libtorch/include/torch/csrc/api/include/")))
 
 
 (asdf:defsystem :claw-torch/example

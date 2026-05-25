@@ -15,3 +15,5 @@ local/
 **/*.dll*
 **/*.dylib*
 src/lib/build/
+
+libtorch
