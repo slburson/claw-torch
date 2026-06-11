@@ -1,0 +1,643 @@
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/batchnorm.h b/include/torch/csrc/api/include/torch/nn/modules/batchnorm.h
+index bf15615..7bd6d93 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/batchnorm.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/batchnorm.h
+@@ -97,7 +97,9 @@ class NormImplBase : public torch::nn::Cloneable<Derived> {
+ template <size_t D, typename Derived>
+ class BatchNormImplBase : public NormImplBase<D, Derived, BatchNormOptions> {
+  public:
+-  using NormImplBase<D, Derived, BatchNormOptions>::NormImplBase;
++  // using NormImplBase<D, Derived, BatchNormOptions>::NormImplBase;
++  BatchNormImplBase(const BatchNormOptions& options_)
++    : NormImplBase<D, Derived, BatchNormOptions>(options_) {}
+ 
+   Tensor forward(const Tensor& input) {
+     this->_check_input_dim(input);
+@@ -170,7 +172,9 @@ class TORCH_API BatchNorm1dImpl : public BatchNormImplBase<1, BatchNorm1dImpl> {
+   void _check_input_dim(const Tensor& input) override;
+ 
+  public:
+-  using BatchNormImplBase<1, BatchNorm1dImpl>::BatchNormImplBase;
++  // using BatchNormImplBase<1, BatchNorm1dImpl>::BatchNormImplBase;
++  BatchNorm1dImpl(const BatchNormOptions& options_)
++    : BatchNormImplBase<1, BatchNorm1dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `BatchNorm1dImpl`.
+@@ -200,7 +204,9 @@ class TORCH_API BatchNorm2dImpl : public BatchNormImplBase<2, BatchNorm2dImpl> {
+   void _check_input_dim(const Tensor& input) override;
+ 
+  public:
+-  using BatchNormImplBase<2, BatchNorm2dImpl>::BatchNormImplBase;
++  // using BatchNormImplBase<2, BatchNorm2dImpl>::BatchNormImplBase;
++  BatchNorm2dImpl(const BatchNormOptions& options_)
++    : BatchNormImplBase<2, BatchNorm2dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `BatchNorm2dImpl`.
+@@ -230,7 +236,9 @@ class TORCH_API BatchNorm3dImpl : public BatchNormImplBase<3, BatchNorm3dImpl> {
+   void _check_input_dim(const Tensor& input) override;
+ 
+  public:
+-  using BatchNormImplBase<3, BatchNorm3dImpl>::BatchNormImplBase;
++  // using BatchNormImplBase<3, BatchNorm3dImpl>::BatchNormImplBase;
++  BatchNorm3dImpl(const BatchNormOptions& options_)
++    : BatchNormImplBase<3, BatchNorm3dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `BatchNorm3dImpl`.
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/dropout.h b/include/torch/csrc/api/include/torch/nn/modules/dropout.h
+index 98585fd..2686b12 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/dropout.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/dropout.h
+@@ -49,7 +49,11 @@ class _DropoutNd : public torch::nn::Cloneable<Derived> {
+ /// ```
+ class TORCH_API DropoutImpl : public detail::_DropoutNd<DropoutImpl> {
+  public:
+-  using detail::_DropoutNd<DropoutImpl>::_DropoutNd;
++  // using detail::_DropoutNd<DropoutImpl>::_DropoutNd;
++  DropoutImpl(double p) : detail::_DropoutNd<DropoutImpl>(p) {}
++
++  explicit DropoutImpl(const DropoutOptions& options_ = {})
++      : detail::_DropoutNd<DropoutImpl>(options_) {}
+ 
+   Tensor forward(Tensor input);
+ 
+@@ -79,7 +83,11 @@ TORCH_MODULE(Dropout);
+ /// ```
+ class TORCH_API Dropout2dImpl : public detail::_DropoutNd<Dropout2dImpl> {
+  public:
+-  using detail::_DropoutNd<Dropout2dImpl>::_DropoutNd;
++  // using detail::_DropoutNd<Dropout2dImpl>::_DropoutNd;
++  Dropout2dImpl(double p) : detail::_DropoutNd<Dropout2dImpl>(p) {}
++
++  explicit Dropout2dImpl(const DropoutOptions& options_ = {})
++      : detail::_DropoutNd<Dropout2dImpl>(options_) {}
+ 
+   Tensor forward(Tensor input);
+ 
+@@ -109,7 +117,11 @@ TORCH_MODULE(Dropout2d);
+ /// ```
+ class TORCH_API Dropout3dImpl : public detail::_DropoutNd<Dropout3dImpl> {
+  public:
+-  using detail::_DropoutNd<Dropout3dImpl>::_DropoutNd;
++  // using detail::_DropoutNd<Dropout3dImpl>::_DropoutNd;
++  Dropout3dImpl(double p) : detail::_DropoutNd<Dropout3dImpl>(p) {}
++
++  explicit Dropout3dImpl(const DropoutOptions& options_ = {})
++      : detail::_DropoutNd<Dropout3dImpl>(options_) {}
+ 
+   Tensor forward(Tensor input);
+ 
+@@ -139,7 +151,11 @@ TORCH_MODULE(Dropout3d);
+ /// ```
+ class TORCH_API AlphaDropoutImpl : public detail::_DropoutNd<AlphaDropoutImpl> {
+  public:
+-  using detail::_DropoutNd<AlphaDropoutImpl>::_DropoutNd;
++  // using detail::_DropoutNd<AlphaDropoutImpl>::_DropoutNd;
++  AlphaDropoutImpl(double p) : detail::_DropoutNd<AlphaDropoutImpl>(p) {}
++
++  explicit AlphaDropoutImpl(const DropoutOptions& options_ = {})
++      : detail::_DropoutNd<AlphaDropoutImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ 
+@@ -167,7 +183,11 @@ TORCH_MODULE(AlphaDropout);
+ class TORCH_API FeatureAlphaDropoutImpl
+     : public detail::_DropoutNd<FeatureAlphaDropoutImpl> {
+  public:
+-  using detail::_DropoutNd<FeatureAlphaDropoutImpl>::_DropoutNd;
++  // using detail::_DropoutNd<FeatureAlphaDropoutImpl>::_DropoutNd;
++  FeatureAlphaDropoutImpl(double p) : detail::_DropoutNd<FeatureAlphaDropoutImpl>(p) {}
++
++  explicit FeatureAlphaDropoutImpl(const DropoutOptions& options_ = {})
++      : detail::_DropoutNd<FeatureAlphaDropoutImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ 
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/embedding.h b/include/torch/csrc/api/include/torch/nn/modules/embedding.h
+index 1899792..16aff4f 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/embedding.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/embedding.h
+@@ -59,7 +59,12 @@ class TORCH_API EmbeddingImpl : public torch::nn::Cloneable<EmbeddingImpl> {
+ /// learn about PyTorch's module storage semantics.
+ class Embedding : public torch::nn::ModuleHolder<EmbeddingImpl> {
+  public:
+-  using torch::nn::ModuleHolder<EmbeddingImpl>::ModuleHolder;
++  // using torch::nn::ModuleHolder<EmbeddingImpl>::ModuleHolder;
++  // Templated constructor omitted for Claw-Torch. -- SLB
++  Embedding(std::nullptr_t n) : torch::nn::ModuleHolder<EmbeddingImpl>(n) {}
++  Embedding(std::shared_ptr<EmbeddingImpl> p) : torch::nn::ModuleHolder<EmbeddingImpl>(p) {}
++  explicit Embedding(EmbeddingOptions options)
++    : torch::nn::ModuleHolder<EmbeddingImpl>(std::make_shared<EmbeddingImpl>(options)) {}
+ 
+   /// See the documentation for `torch::nn::EmbeddingFromPretrainedOptions`
+   /// class to learn what optional arguments are supported for this function.
+@@ -136,7 +141,12 @@ class TORCH_API EmbeddingBagImpl
+ /// to learn about PyTorch's module storage semantics.
+ class EmbeddingBag : public torch::nn::ModuleHolder<EmbeddingBagImpl> {
+  public:
+-  using torch::nn::ModuleHolder<EmbeddingBagImpl>::ModuleHolder;
++  // using torch::nn::ModuleHolder<EmbeddingBagImpl>::ModuleHolder;
++  // Templated constructor omitted for Claw-Torch. -- SLB
++  EmbeddingBag(std::nullptr_t n) : torch::nn::ModuleHolder<EmbeddingBagImpl>(n) {}
++  EmbeddingBag(std::shared_ptr<EmbeddingBagImpl> p) : torch::nn::ModuleHolder<EmbeddingBagImpl>(p) {}
++  explicit EmbeddingBag(EmbeddingBagOptions options)
++    : torch::nn::ModuleHolder<EmbeddingBagImpl>(std::make_shared<EmbeddingBagImpl>(options)) {}
+ 
+   /// See the documentation for `torch::nn::EmbeddingBagFromPretrainedOptions`
+   /// class to learn what optional arguments are supported for this function.
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/instancenorm.h b/include/torch/csrc/api/include/torch/nn/modules/instancenorm.h
+index d828808..ae9bd24 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/instancenorm.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/instancenorm.h
+@@ -30,7 +30,9 @@ class InstanceNormImpl
+   }
+ 
+  public:
+-  using torch::nn::NormImplBase<D, Derived, InstanceNormOptions>::NormImplBase;
++  // using torch::nn::NormImplBase<D, Derived, InstanceNormOptions>::NormImplBase;
++  InstanceNormImpl(const InstanceNormOptions& options_)
++      : torch::nn::NormImplBase<D, Derived, InstanceNormOptions>(options_) {}
+ 
+   Tensor forward(const Tensor& input) {
+     this->_check_input_dim(input);
+@@ -79,7 +81,9 @@ class TORCH_API InstanceNorm1dImpl
+   void _check_input_dim(const Tensor& input) override;
+ 
+  public:
+-  using InstanceNormImpl<1, InstanceNorm1dImpl>::InstanceNormImpl;
++  // using InstanceNormImpl<1, InstanceNorm1dImpl>::InstanceNormImpl;
++  InstanceNorm1dImpl(const InstanceNormOptions& options_)
++      : InstanceNormImpl<1, InstanceNorm1dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `InstanceNorm1dImpl`.
+@@ -110,7 +114,9 @@ class TORCH_API InstanceNorm2dImpl
+   void _check_input_dim(const Tensor& input) override;
+ 
+  public:
+-  using InstanceNormImpl<2, InstanceNorm2dImpl>::InstanceNormImpl;
++  // using InstanceNormImpl<2, InstanceNorm2dImpl>::InstanceNormImpl;
++  InstanceNorm2dImpl(const InstanceNormOptions& options_)
++      : InstanceNormImpl<2, InstanceNorm2dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `InstanceNorm2dImpl`.
+@@ -141,7 +147,9 @@ class TORCH_API InstanceNorm3dImpl
+   void _check_input_dim(const Tensor& input) override;
+ 
+  public:
+-  using InstanceNormImpl<3, InstanceNorm3dImpl>::InstanceNormImpl;
++  // using InstanceNormImpl<3, InstanceNorm3dImpl>::InstanceNormImpl;
++  InstanceNorm3dImpl(const InstanceNormOptions& options_)
++      : InstanceNormImpl<3, InstanceNorm3dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `InstanceNorm3dImpl`.
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/padding.h b/include/torch/csrc/api/include/torch/nn/modules/padding.h
+index 73fbcc2..5725373 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/padding.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/padding.h
+@@ -45,7 +45,11 @@ class TORCH_API ReflectionPadImpl : public torch::nn::Cloneable<Derived> {
+ class TORCH_API ReflectionPad1dImpl
+     : public ReflectionPadImpl<1, ReflectionPad1dImpl> {
+  public:
+-  using ReflectionPadImpl<1, ReflectionPad1dImpl>::ReflectionPadImpl;
++  // using ReflectionPadImpl<1, ReflectionPad1dImpl>::ReflectionPadImpl;
++  ReflectionPad1dImpl(ExpandingArray<2> padding)
++      : ReflectionPad1dImpl(ReflectionPadOptions<1>(padding)) {}
++  explicit ReflectionPad1dImpl(const ReflectionPadOptions<1>& options_)
++      : ReflectionPadImpl<1, ReflectionPad1dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ReflectionPad1dImpl`.
+@@ -72,7 +76,11 @@ TORCH_MODULE(ReflectionPad1d);
+ class TORCH_API ReflectionPad2dImpl
+     : public ReflectionPadImpl<2, ReflectionPad2dImpl> {
+  public:
+-  using ReflectionPadImpl<2, ReflectionPad2dImpl>::ReflectionPadImpl;
++  // using ReflectionPadImpl<2, ReflectionPad2dImpl>::ReflectionPadImpl;
++  ReflectionPad2dImpl(ExpandingArray<4> padding)
++      : ReflectionPad2dImpl(ReflectionPadOptions<2>(padding)) {}
++  explicit ReflectionPad2dImpl(const ReflectionPadOptions<2>& options_)
++      : ReflectionPadImpl<2, ReflectionPad2dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ReflectionPad2dImpl`.
+@@ -100,7 +108,11 @@ TORCH_MODULE(ReflectionPad2d);
+ class TORCH_API ReflectionPad3dImpl
+     : public ReflectionPadImpl<3, ReflectionPad3dImpl> {
+  public:
+-  using ReflectionPadImpl<3, ReflectionPad3dImpl>::ReflectionPadImpl;
++  // using ReflectionPadImpl<3, ReflectionPad3dImpl>::ReflectionPadImpl;
++  ReflectionPad3dImpl(ExpandingArray<6> padding)
++      : ReflectionPad3dImpl(ReflectionPadOptions<3>(padding)) {}
++  explicit ReflectionPad3dImpl(const ReflectionPadOptions<3>& options_)
++      : ReflectionPadImpl<3, ReflectionPad3dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ReflectionPad3dImpl`.
+@@ -148,7 +160,11 @@ class TORCH_API ReplicationPadImpl : public torch::nn::Cloneable<Derived> {
+ class TORCH_API ReplicationPad1dImpl
+     : public ReplicationPadImpl<1, ReplicationPad1dImpl> {
+  public:
+-  using ReplicationPadImpl<1, ReplicationPad1dImpl>::ReplicationPadImpl;
++  // using ReplicationPadImpl<1, ReplicationPad1dImpl>::ReplicationPadImpl;
++  ReplicationPad1dImpl(ExpandingArray<2> padding)
++      : ReplicationPad1dImpl(ReplicationPadOptions<1>(padding)) {}
++  explicit ReplicationPad1dImpl(const ReplicationPadOptions<1>& options_)
++      :  ReplicationPadImpl<1, ReplicationPad1dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ReplicationPad1dImpl`.
+@@ -175,7 +191,11 @@ TORCH_MODULE(ReplicationPad1d);
+ class TORCH_API ReplicationPad2dImpl
+     : public ReplicationPadImpl<2, ReplicationPad2dImpl> {
+  public:
+-  using ReplicationPadImpl<2, ReplicationPad2dImpl>::ReplicationPadImpl;
++  // using ReplicationPadImpl<2, ReplicationPad2dImpl>::ReplicationPadImpl;
++  ReplicationPad2dImpl(ExpandingArray<4> padding)
++      : ReplicationPad2dImpl(ReplicationPadOptions<2>(padding)) {}
++  explicit ReplicationPad2dImpl(const ReplicationPadOptions<2>& options_)
++      :  ReplicationPadImpl<2, ReplicationPad2dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ReplicationPad2dImpl`.
+@@ -203,6 +223,10 @@ class TORCH_API ReplicationPad3dImpl
+     : public ReplicationPadImpl<3, ReplicationPad3dImpl> {
+  public:
+   using ReplicationPadImpl<3, ReplicationPad3dImpl>::ReplicationPadImpl;
++  ReplicationPad3dImpl(ExpandingArray<6> padding)
++      : ReplicationPad3dImpl(ReplicationPadOptions<3>(padding)) {}
++  explicit ReplicationPad3dImpl(const ReplicationPadOptions<3>& options_)
++      :  ReplicationPadImpl<3, ReplicationPad3dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ReplicationPad3dImpl`.
+@@ -237,7 +261,11 @@ class TORCH_API ZeroPadImpl : public torch::nn::Cloneable<Derived> {
+ // Applies ZeroPad over a 1-D input.
+ class TORCH_API ZeroPad1dImpl : public ZeroPadImpl<1, ZeroPad1dImpl> {
+  public:
+-  using ZeroPadImpl<1, ZeroPad1dImpl>::ZeroPadImpl;
++  // using ZeroPadImpl<1, ZeroPad1dImpl>::ZeroPadImpl;
++  ZeroPad1dImpl(ExpandingArray<2> padding)
++      : ZeroPad1dImpl(ZeroPadOptions<1>(padding)) {}
++  explicit ZeroPad1dImpl(const ZeroPadOptions<1>& options_)
++      : ZeroPadImpl<1, ZeroPad1dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ZeroPad1dImpl`.
+@@ -251,7 +279,11 @@ TORCH_MODULE(ZeroPad1d);
+ // Applies ZeroPad over a 2-D input.
+ class TORCH_API ZeroPad2dImpl : public ZeroPadImpl<2, ZeroPad2dImpl> {
+  public:
+-  using ZeroPadImpl<2, ZeroPad2dImpl>::ZeroPadImpl;
++  // using ZeroPadImpl<2, ZeroPad2dImpl>::ZeroPadImpl;
++  ZeroPad2dImpl(ExpandingArray<4> padding)
++      : ZeroPad2dImpl(ZeroPadOptions<2>(padding)) {}
++  explicit ZeroPad2dImpl(const ZeroPadOptions<2>& options_)
++      : ZeroPadImpl<2, ZeroPad2dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ZeroPad2dImpl`.
+@@ -265,7 +297,11 @@ TORCH_MODULE(ZeroPad2d);
+ // Applies ZeroPad over a 3-D input.
+ class TORCH_API ZeroPad3dImpl : public ZeroPadImpl<3, ZeroPad3dImpl> {
+  public:
+-  using ZeroPadImpl<3, ZeroPad3dImpl>::ZeroPadImpl;
++  // using ZeroPadImpl<3, ZeroPad3dImpl>::ZeroPadImpl;
++  ZeroPad3dImpl(ExpandingArray<6> padding)
++      : ZeroPad3dImpl(ZeroPadOptions<3>(padding)) {}
++  explicit ZeroPad3dImpl(const ZeroPadOptions<3>& options_)
++      : ZeroPadImpl<3, ZeroPad3dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ZeroPad3dImpl`.
+@@ -312,7 +348,11 @@ class TORCH_API ConstantPadImpl : public torch::nn::Cloneable<Derived> {
+ class TORCH_API ConstantPad1dImpl
+     : public ConstantPadImpl<1, ConstantPad1dImpl> {
+  public:
+-  using ConstantPadImpl<1, ConstantPad1dImpl>::ConstantPadImpl;
++  // using ConstantPadImpl<1, ConstantPad1dImpl>::ConstantPadImpl;
++  ConstantPad1dImpl(ExpandingArray<2> padding, double value)
++      : ConstantPad1dImpl(ConstantPadOptions<1>(padding, value)) {}
++  explicit ConstantPad1dImpl(const ConstantPadOptions<1>& options_)
++      : ConstantPadImpl<1, ConstantPad1dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ConstantPad1dImpl`.
+@@ -338,7 +378,11 @@ TORCH_MODULE(ConstantPad1d);
+ class TORCH_API ConstantPad2dImpl
+     : public ConstantPadImpl<2, ConstantPad2dImpl> {
+  public:
+-  using ConstantPadImpl<2, ConstantPad2dImpl>::ConstantPadImpl;
++  // using ConstantPadImpl<2, ConstantPad2dImpl>::ConstantPadImpl;
++  ConstantPad2dImpl(ExpandingArray<4> padding, double value)
++      : ConstantPad2dImpl(ConstantPadOptions<2>(padding, value)) {}
++  explicit ConstantPad2dImpl(const ConstantPadOptions<2>& options_)
++      : ConstantPadImpl<2, ConstantPad2dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ConstantPad2dImpl`.
+@@ -364,7 +408,11 @@ TORCH_MODULE(ConstantPad2d);
+ class TORCH_API ConstantPad3dImpl
+     : public ConstantPadImpl<3, ConstantPad3dImpl> {
+  public:
+-  using ConstantPadImpl<3, ConstantPad3dImpl>::ConstantPadImpl;
++  // using ConstantPadImpl<3, ConstantPad3dImpl>::ConstantPadImpl;
++  ConstantPad3dImpl(ExpandingArray<6> padding, double value)
++      : ConstantPad3dImpl(ConstantPadOptions<3>(padding, value)) {}
++  explicit ConstantPad3dImpl(const ConstantPadOptions<3>& options_)
++      : ConstantPadImpl<3, ConstantPad3dImpl>(options_) {}
+ };
+ 
+ /// A `ModuleHolder` subclass for `ConstantPad3dImpl`.
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/pooling.h b/include/torch/csrc/api/include/torch/nn/modules/pooling.h
+index 2e05359..b09d5bd 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/pooling.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/pooling.h
+@@ -43,7 +43,10 @@ class TORCH_API AvgPoolImpl : public torch::nn::Cloneable<Derived> {
+ /// ```
+ class TORCH_API AvgPool1dImpl : public AvgPoolImpl<1, AvgPool1dImpl> {
+  public:
+-  using AvgPoolImpl<1, AvgPool1dImpl>::AvgPoolImpl;
++  // using AvgPoolImpl<1, AvgPool1dImpl>::AvgPoolImpl;
++  AvgPool1dImpl(ExpandingArray<1> kernel_size)
++      : AvgPool1dImpl(AvgPoolOptions<1>(kernel_size)) {}
++  explicit AvgPool1dImpl(const AvgPoolOptions<1>& options_);
+   Tensor forward(const Tensor& input);
+ };
+ 
+@@ -69,7 +72,10 @@ TORCH_MODULE(AvgPool1d);
+ /// ```
+ class TORCH_API AvgPool2dImpl : public AvgPoolImpl<2, AvgPool2dImpl> {
+  public:
+-  using AvgPoolImpl<2, AvgPool2dImpl>::AvgPoolImpl;
++  // using AvgPoolImpl<2, AvgPool2dImpl>::AvgPoolImpl;
++  AvgPool2dImpl(ExpandingArray<2> kernel_size)
++      : AvgPool2dImpl(AvgPoolOptions<2>(kernel_size)) {}
++  explicit AvgPool2dImpl(const AvgPoolOptions<2>& options_);
+   Tensor forward(const Tensor& input);
+ };
+ 
+@@ -95,7 +101,10 @@ TORCH_MODULE(AvgPool2d);
+ /// ```
+ class TORCH_API AvgPool3dImpl : public AvgPoolImpl<3, AvgPool3dImpl> {
+  public:
+-  using AvgPoolImpl<3, AvgPool3dImpl>::AvgPoolImpl;
++  // using AvgPoolImpl<3, AvgPool3dImpl>::AvgPoolImpl;
++  AvgPool3dImpl(ExpandingArray<3> kernel_size)
++      : AvgPool3dImpl(AvgPoolOptions<3>(kernel_size)) {}
++  explicit AvgPool3dImpl(const AvgPoolOptions<3>& options_);
+   Tensor forward(const Tensor& input);
+ };
+ 
+@@ -140,7 +149,10 @@ class TORCH_API MaxPoolImpl : public torch::nn::Cloneable<Derived> {
+ /// ```
+ class TORCH_API MaxPool1dImpl : public MaxPoolImpl<1, MaxPool1dImpl> {
+  public:
+-  using MaxPoolImpl<1, MaxPool1dImpl>::MaxPoolImpl;
++  // using MaxPoolImpl<1, MaxPool1dImpl>::MaxPoolImpl;
++  MaxPool1dImpl(ExpandingArray<1> kernel_size)
++      : MaxPool1dImpl(MaxPoolOptions<1>(kernel_size)) {}
++  explicit MaxPool1dImpl(const MaxPoolOptions<1>& options_);
+   Tensor forward(const Tensor& input);
+ 
+   /// Returns the outputs and the indices of the max values.
+@@ -170,7 +182,10 @@ TORCH_MODULE(MaxPool1d);
+ /// ```
+ class TORCH_API MaxPool2dImpl : public MaxPoolImpl<2, MaxPool2dImpl> {
+  public:
+-  using MaxPoolImpl<2, MaxPool2dImpl>::MaxPoolImpl;
++  // using MaxPoolImpl<2, MaxPool2dImpl>::MaxPoolImpl;
++  MaxPool2dImpl(ExpandingArray<2> kernel_size)
++      : MaxPool2dImpl(MaxPoolOptions<2>(kernel_size)) {}
++  explicit MaxPool2dImpl(const MaxPoolOptions<2>& options_);
+   Tensor forward(const Tensor& input);
+ 
+   /// Returns the outputs and the indices of the max values.
+@@ -200,7 +215,10 @@ TORCH_MODULE(MaxPool2d);
+ /// ```
+ class TORCH_API MaxPool3dImpl : public MaxPoolImpl<3, MaxPool3dImpl> {
+  public:
+-  using MaxPoolImpl<3, MaxPool3dImpl>::MaxPoolImpl;
++  // using MaxPoolImpl<3, MaxPool3dImpl>::MaxPoolImpl;
++  MaxPool3dImpl(ExpandingArray<3> kernel_size)
++      : MaxPool3dImpl(MaxPoolOptions<3>(kernel_size)) {}
++  explicit MaxPool3dImpl(const MaxPoolOptions<3>& options_);
+   Tensor forward(const Tensor& input);
+ 
+   /// Returns the outputs and the indices of the max values.
+@@ -257,8 +275,14 @@ class TORCH_API AdaptiveMaxPoolImpl : public torch::nn::Cloneable<Derived> {
+ class TORCH_API AdaptiveMaxPool1dImpl
+     : public AdaptiveMaxPoolImpl<1, ExpandingArray<1>, AdaptiveMaxPool1dImpl> {
+  public:
+-  using AdaptiveMaxPoolImpl<1, ExpandingArray<1>, AdaptiveMaxPool1dImpl>::
+-      AdaptiveMaxPoolImpl;
++  // using AdaptiveMaxPoolImpl<1, ExpandingArray<1>, AdaptiveMaxPool1dImpl>::
++  //     AdaptiveMaxPoolImpl;
++  AdaptiveMaxPool1dImpl(ExpandingArray<1> output_size)
++      : AdaptiveMaxPool1dImpl(
++            AdaptiveMaxPoolOptions<ExpandingArray<1>>(output_size)) {}
++  explicit AdaptiveMaxPool1dImpl(
++      const AdaptiveMaxPoolOptions<ExpandingArray<1>>& options_)
++      : AdaptiveMaxPoolImpl<1, ExpandingArray<1>, AdaptiveMaxPool1dImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ 
+@@ -292,10 +316,16 @@ class TORCH_API AdaptiveMaxPool2dImpl : public AdaptiveMaxPoolImpl<
+                                             ExpandingArrayWithOptionalElem<2>,
+                                             AdaptiveMaxPool2dImpl> {
+  public:
+-  using AdaptiveMaxPoolImpl<
+-      2,
+-      ExpandingArrayWithOptionalElem<2>,
+-      AdaptiveMaxPool2dImpl>::AdaptiveMaxPoolImpl;
++  // using AdaptiveMaxPoolImpl<
++  //     2,
++  //     ExpandingArrayWithOptionalElem<2>,
++  //     AdaptiveMaxPool2dImpl>::AdaptiveMaxPoolImpl;
++  AdaptiveMaxPool2dImpl(ExpandingArrayWithOptionalElem<2> output_size)
++      : AdaptiveMaxPool2dImpl(
++            AdaptiveMaxPoolOptions<ExpandingArrayWithOptionalElem<2>>(output_size)) {}
++  explicit AdaptiveMaxPool2dImpl(
++      const AdaptiveMaxPoolOptions<ExpandingArrayWithOptionalElem<2>>& options_)
++      : AdaptiveMaxPoolImpl<2, ExpandingArrayWithOptionalElem<2>, AdaptiveMaxPool2dImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ 
+@@ -329,10 +359,16 @@ class TORCH_API AdaptiveMaxPool3dImpl : public AdaptiveMaxPoolImpl<
+                                             ExpandingArrayWithOptionalElem<3>,
+                                             AdaptiveMaxPool3dImpl> {
+  public:
+-  using AdaptiveMaxPoolImpl<
+-      3,
+-      ExpandingArrayWithOptionalElem<3>,
+-      AdaptiveMaxPool3dImpl>::AdaptiveMaxPoolImpl;
++  // using AdaptiveMaxPoolImpl<
++  //     3,
++  //     ExpandingArrayWithOptionalElem<3>,
++  //     AdaptiveMaxPool3dImpl>::AdaptiveMaxPoolImpl;
++  AdaptiveMaxPool3dImpl(ExpandingArrayWithOptionalElem<3> output_size)
++      : AdaptiveMaxPool3dImpl(
++            AdaptiveMaxPoolOptions<ExpandingArrayWithOptionalElem<3>>(output_size)) {}
++  explicit AdaptiveMaxPool3dImpl(
++      const AdaptiveMaxPoolOptions<ExpandingArrayWithOptionalElem<3>>& options_)
++      : AdaptiveMaxPoolImpl<3, ExpandingArrayWithOptionalElem<3>, AdaptiveMaxPool3dImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ 
+@@ -390,8 +426,14 @@ class TORCH_API AdaptiveAvgPoolImpl : public torch::nn::Cloneable<Derived> {
+ class TORCH_API AdaptiveAvgPool1dImpl
+     : public AdaptiveAvgPoolImpl<1, ExpandingArray<1>, AdaptiveAvgPool1dImpl> {
+  public:
+-  using AdaptiveAvgPoolImpl<1, ExpandingArray<1>, AdaptiveAvgPool1dImpl>::
+-      AdaptiveAvgPoolImpl;
++  // using AdaptiveAvgPoolImpl<1, ExpandingArray<1>, AdaptiveAvgPool1dImpl>::
++  //     AdaptiveAvgPoolImpl;
++  AdaptiveAvgPool1dImpl(ExpandingArray<1> output_size)
++      : AdaptiveAvgPool1dImpl(
++            AdaptiveAvgPoolOptions<ExpandingArray<1>>(output_size)) {}
++  explicit AdaptiveAvgPool1dImpl(
++      const AdaptiveAvgPoolOptions<ExpandingArray<1>>& options_)
++      : AdaptiveAvgPoolImpl<1, ExpandingArray<1>, AdaptiveAvgPool1dImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ };
+@@ -421,10 +463,16 @@ class TORCH_API AdaptiveAvgPool2dImpl : public AdaptiveAvgPoolImpl<
+                                             ExpandingArrayWithOptionalElem<2>,
+                                             AdaptiveAvgPool2dImpl> {
+  public:
+-  using AdaptiveAvgPoolImpl<
+-      2,
+-      ExpandingArrayWithOptionalElem<2>,
+-      AdaptiveAvgPool2dImpl>::AdaptiveAvgPoolImpl;
++  // using AdaptiveAvgPoolImpl<
++  //     2,
++  //     ExpandingArrayWithOptionalElem<2>,
++  //     AdaptiveAvgPool2dImpl>::AdaptiveAvgPoolImpl;
++  AdaptiveAvgPool2dImpl(ExpandingArrayWithOptionalElem<2> output_size)
++      : AdaptiveAvgPool2dImpl(
++            AdaptiveAvgPoolOptions<ExpandingArrayWithOptionalElem<2>>(output_size)) {}
++  explicit AdaptiveAvgPool2dImpl(
++      const AdaptiveAvgPoolOptions<ExpandingArrayWithOptionalElem<2>>& options_)
++      : AdaptiveAvgPoolImpl<2, ExpandingArrayWithOptionalElem<2>, AdaptiveAvgPool2dImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ };
+@@ -454,10 +502,16 @@ class TORCH_API AdaptiveAvgPool3dImpl : public AdaptiveAvgPoolImpl<
+                                             ExpandingArrayWithOptionalElem<3>,
+                                             AdaptiveAvgPool3dImpl> {
+  public:
+-  using AdaptiveAvgPoolImpl<
+-      3,
+-      ExpandingArrayWithOptionalElem<3>,
+-      AdaptiveAvgPool3dImpl>::AdaptiveAvgPoolImpl;
++  // using AdaptiveAvgPoolImpl<
++  //     3,
++  //     ExpandingArrayWithOptionalElem<3>,
++  //     AdaptiveAvgPool3dImpl>::AdaptiveAvgPoolImpl;
++  AdaptiveAvgPool3dImpl(ExpandingArrayWithOptionalElem<3> output_size)
++      : AdaptiveAvgPool3dImpl(
++            AdaptiveAvgPoolOptions<ExpandingArrayWithOptionalElem<3>>(output_size)) {}
++  explicit AdaptiveAvgPool3dImpl(
++      const AdaptiveAvgPoolOptions<ExpandingArrayWithOptionalElem<3>>& options_)
++      : AdaptiveAvgPoolImpl<3, ExpandingArrayWithOptionalElem<3>, AdaptiveAvgPool3dImpl>(options_) {}
+ 
+   Tensor forward(const Tensor& input);
+ };
+@@ -503,7 +557,11 @@ class TORCH_API MaxUnpoolImpl : public torch::nn::Cloneable<Derived> {
+ /// ```
+ class TORCH_API MaxUnpool1dImpl : public MaxUnpoolImpl<1, MaxUnpool1dImpl> {
+  public:
+-  using MaxUnpoolImpl<1, MaxUnpool1dImpl>::MaxUnpoolImpl;
++  // using MaxUnpoolImpl<1, MaxUnpool1dImpl>::MaxUnpoolImpl;
++  MaxUnpool1dImpl(ExpandingArray<1> kernel_size)
++      : MaxUnpool1dImpl(MaxUnpoolOptions<1>(kernel_size)) {}
++  explicit MaxUnpool1dImpl(const MaxUnpoolOptions<1>& options_);
++
+   Tensor forward(
+       const Tensor& input,
+       const Tensor& indices,
+@@ -535,7 +593,11 @@ TORCH_MODULE(MaxUnpool1d);
+ /// ```
+ class TORCH_API MaxUnpool2dImpl : public MaxUnpoolImpl<2, MaxUnpool2dImpl> {
+  public:
+-  using MaxUnpoolImpl<2, MaxUnpool2dImpl>::MaxUnpoolImpl;
++  // using MaxUnpoolImpl<2, MaxUnpool2dImpl>::MaxUnpoolImpl;
++  MaxUnpool2dImpl(ExpandingArray<2> kernel_size)
++      : MaxUnpool2dImpl(MaxUnpoolOptions<2>(kernel_size)) {}
++  explicit MaxUnpool2dImpl(const MaxUnpoolOptions<2>& options_);
++
+   Tensor forward(
+       const Tensor& input,
+       const Tensor& indices,
+@@ -567,7 +629,11 @@ TORCH_MODULE(MaxUnpool2d);
+ /// ```
+ class TORCH_API MaxUnpool3dImpl : public MaxUnpoolImpl<3, MaxUnpool3dImpl> {
+  public:
+-  using MaxUnpoolImpl<3, MaxUnpool3dImpl>::MaxUnpoolImpl;
++  // using MaxUnpoolImpl<3, MaxUnpool3dImpl>::MaxUnpoolImpl;
++  MaxUnpool3dImpl(ExpandingArray<3> kernel_size)
++      : MaxUnpool3dImpl(MaxUnpoolOptions<3>(kernel_size)) {}
++  explicit MaxUnpool3dImpl(const MaxUnpoolOptions<3>& options_);
++
+   Tensor forward(
+       const Tensor& input,
+       const Tensor& indices,
+@@ -707,7 +773,10 @@ class TORCH_API LPPoolImpl : public torch::nn::Cloneable<Derived> {
+ /// ```
+ class TORCH_API LPPool1dImpl : public LPPoolImpl<1, LPPool1dImpl> {
+  public:
+-  using LPPoolImpl<1, LPPool1dImpl>::LPPoolImpl;
++  // using LPPoolImpl<1, LPPool1dImpl>::LPPoolImpl;
++  LPPool1dImpl(double norm_type, ExpandingArray<1> kernel_size)
++      : LPPool1dImpl(LPPoolOptions<1>(norm_type, kernel_size)) {}
++  explicit LPPool1dImpl(const LPPoolOptions<1>& options_);
+ 
+   Tensor forward(const Tensor& input);
+ };
+@@ -735,7 +804,10 @@ TORCH_MODULE(LPPool1d);
+ /// ```
+ class TORCH_API LPPool2dImpl : public LPPoolImpl<2, LPPool2dImpl> {
+  public:
+-  using LPPoolImpl<2, LPPool2dImpl>::LPPoolImpl;
++  // using LPPoolImpl<2, LPPool2dImpl>::LPPoolImpl;
++  LPPool2dImpl(double norm_type, ExpandingArray<2> kernel_size)
++      : LPPool2dImpl(LPPoolOptions<2>(norm_type, kernel_size)) {}
++  explicit LPPool2dImpl(const LPPoolOptions<2>& options_);
+ 
+   Tensor forward(const Tensor& input);
+ };
+@@ -763,7 +835,10 @@ TORCH_MODULE(LPPool2d);
+ /// ```
+ class TORCH_API LPPool3dImpl : public LPPoolImpl<3, LPPool3dImpl> {
+  public:
+-  using LPPoolImpl<3, LPPool3dImpl>::LPPoolImpl;
++  // using LPPoolImpl<3, LPPool3dImpl>::LPPoolImpl;
++  LPPool3dImpl(double norm_type, ExpandingArray<3> kernel_size)
++      : LPPool3dImpl(LPPoolOptions<3>(norm_type, kernel_size)) {}
++  explicit LPPool3dImpl(const LPPoolOptions<3>& options_);
+ 
+   Tensor forward(const Tensor& input);
+ };
+diff --git a/include/torch/csrc/api/include/torch/nn/pimpl.h b/include/torch/csrc/api/include/torch/nn/pimpl.h
+index b1c1cc2..a3a345d 100644
+--- a/include/torch/csrc/api/include/torch/nn/pimpl.h
++++ b/include/torch/csrc/api/include/torch/nn/pimpl.h
+@@ -190,10 +190,13 @@ serialize::InputArchive& operator>>(
+ /// wrapper over a `std::shared_ptr<ImplType>`.
+ /// `Impl` is a type alias for `ImplType` which provides a way to call static
+ /// method of `ImplType`.
++// For Claw-Torch, I have removed the constructor inheritance and explicitly declared
++// the constructors, except for the hairy templated one, which I don't think we need. -- SLB
+ #define TORCH_MODULE_IMPL(Name, ImplType)                              \
+   class Name : public torch::nn::ModuleHolder<ImplType> { /* NOLINT */ \
+    public:                                                             \
+-    using torch::nn::ModuleHolder<ImplType>::ModuleHolder;             \
++    Name(std::nullptr_t n) : torch::nn::ModuleHolder<ImplType>(n) {}   \
++    Name(std::shared_ptr<ImplType> p) : torch::nn::ModuleHolder<ImplType>(p) {} \
+     using Impl TORCH_UNUSED_EXCEPT_CUDA = ImplType;                    \
+   }
+ 
