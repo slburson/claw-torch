@@ -354,10 +354,10 @@ index 73fbcc2..5725373 100644
  
  /// A `ModuleHolder` subclass for `ConstantPad3dImpl`.
 diff --git a/include/torch/csrc/api/include/torch/nn/modules/pooling.h b/include/torch/csrc/api/include/torch/nn/modules/pooling.h
-index 2e05359..b09d5bd 100644
+index 2e05359..84a0061 100644
 --- a/include/torch/csrc/api/include/torch/nn/modules/pooling.h
 +++ b/include/torch/csrc/api/include/torch/nn/modules/pooling.h
-@@ -43,7 +43,10 @@ class TORCH_API AvgPoolImpl : public torch::nn::Cloneable<Derived> {
+@@ -43,7 +43,11 @@ class TORCH_API AvgPoolImpl : public torch::nn::Cloneable<Derived> {
  /// ```
  class TORCH_API AvgPool1dImpl : public AvgPoolImpl<1, AvgPool1dImpl> {
   public:
@@ -365,11 +365,12 @@ index 2e05359..b09d5bd 100644
 +  // using AvgPoolImpl<1, AvgPool1dImpl>::AvgPoolImpl;
 +  AvgPool1dImpl(ExpandingArray<1> kernel_size)
 +      : AvgPool1dImpl(AvgPoolOptions<1>(kernel_size)) {}
-+  explicit AvgPool1dImpl(const AvgPoolOptions<1>& options_);
++  explicit AvgPool1dImpl(const AvgPoolOptions<1>& options_)
++      : AvgPoolImpl<1, AvgPool1dImpl>(options_) {}
    Tensor forward(const Tensor& input);
  };
  
-@@ -69,7 +72,10 @@ TORCH_MODULE(AvgPool1d);
+@@ -69,7 +73,11 @@ TORCH_MODULE(AvgPool1d);
  /// ```
  class TORCH_API AvgPool2dImpl : public AvgPoolImpl<2, AvgPool2dImpl> {
   public:
@@ -377,11 +378,12 @@ index 2e05359..b09d5bd 100644
 +  // using AvgPoolImpl<2, AvgPool2dImpl>::AvgPoolImpl;
 +  AvgPool2dImpl(ExpandingArray<2> kernel_size)
 +      : AvgPool2dImpl(AvgPoolOptions<2>(kernel_size)) {}
-+  explicit AvgPool2dImpl(const AvgPoolOptions<2>& options_);
++  explicit AvgPool2dImpl(const AvgPoolOptions<2>& options_)
++      : AvgPoolImpl<2, AvgPool2dImpl>(options_) {}
    Tensor forward(const Tensor& input);
  };
  
-@@ -95,7 +101,10 @@ TORCH_MODULE(AvgPool2d);
+@@ -95,7 +103,11 @@ TORCH_MODULE(AvgPool2d);
  /// ```
  class TORCH_API AvgPool3dImpl : public AvgPoolImpl<3, AvgPool3dImpl> {
   public:
@@ -389,11 +391,12 @@ index 2e05359..b09d5bd 100644
 +  // using AvgPoolImpl<3, AvgPool3dImpl>::AvgPoolImpl;
 +  AvgPool3dImpl(ExpandingArray<3> kernel_size)
 +      : AvgPool3dImpl(AvgPoolOptions<3>(kernel_size)) {}
-+  explicit AvgPool3dImpl(const AvgPoolOptions<3>& options_);
++  explicit AvgPool3dImpl(const AvgPoolOptions<3>& options_)
++      : AvgPoolImpl<3, AvgPool3dImpl>(options_) {}
    Tensor forward(const Tensor& input);
  };
  
-@@ -140,7 +149,10 @@ class TORCH_API MaxPoolImpl : public torch::nn::Cloneable<Derived> {
+@@ -140,7 +152,11 @@ class TORCH_API MaxPoolImpl : public torch::nn::Cloneable<Derived> {
  /// ```
  class TORCH_API MaxPool1dImpl : public MaxPoolImpl<1, MaxPool1dImpl> {
   public:
@@ -401,11 +404,12 @@ index 2e05359..b09d5bd 100644
 +  // using MaxPoolImpl<1, MaxPool1dImpl>::MaxPoolImpl;
 +  MaxPool1dImpl(ExpandingArray<1> kernel_size)
 +      : MaxPool1dImpl(MaxPoolOptions<1>(kernel_size)) {}
-+  explicit MaxPool1dImpl(const MaxPoolOptions<1>& options_);
++  explicit MaxPool1dImpl(const MaxPoolOptions<1>& options_)
++      : MaxPoolImpl<1, MaxPool1dImpl>(options_) {}
    Tensor forward(const Tensor& input);
  
    /// Returns the outputs and the indices of the max values.
-@@ -170,7 +182,10 @@ TORCH_MODULE(MaxPool1d);
+@@ -170,7 +186,11 @@ TORCH_MODULE(MaxPool1d);
  /// ```
  class TORCH_API MaxPool2dImpl : public MaxPoolImpl<2, MaxPool2dImpl> {
   public:
@@ -413,11 +417,12 @@ index 2e05359..b09d5bd 100644
 +  // using MaxPoolImpl<2, MaxPool2dImpl>::MaxPoolImpl;
 +  MaxPool2dImpl(ExpandingArray<2> kernel_size)
 +      : MaxPool2dImpl(MaxPoolOptions<2>(kernel_size)) {}
-+  explicit MaxPool2dImpl(const MaxPoolOptions<2>& options_);
++  explicit MaxPool2dImpl(const MaxPoolOptions<2>& options_)
++      : MaxPoolImpl<2, MaxPool2dImpl>(options_) {}
    Tensor forward(const Tensor& input);
  
    /// Returns the outputs and the indices of the max values.
-@@ -200,7 +215,10 @@ TORCH_MODULE(MaxPool2d);
+@@ -200,7 +220,11 @@ TORCH_MODULE(MaxPool2d);
  /// ```
  class TORCH_API MaxPool3dImpl : public MaxPoolImpl<3, MaxPool3dImpl> {
   public:
@@ -425,11 +430,12 @@ index 2e05359..b09d5bd 100644
 +  // using MaxPoolImpl<3, MaxPool3dImpl>::MaxPoolImpl;
 +  MaxPool3dImpl(ExpandingArray<3> kernel_size)
 +      : MaxPool3dImpl(MaxPoolOptions<3>(kernel_size)) {}
-+  explicit MaxPool3dImpl(const MaxPoolOptions<3>& options_);
++  explicit MaxPool3dImpl(const MaxPoolOptions<3>& options_)
++      : MaxPoolImpl<3, MaxPool3dImpl>(options_) {}
    Tensor forward(const Tensor& input);
  
    /// Returns the outputs and the indices of the max values.
-@@ -257,8 +275,14 @@ class TORCH_API AdaptiveMaxPoolImpl : public torch::nn::Cloneable<Derived> {
+@@ -257,8 +281,14 @@ class TORCH_API AdaptiveMaxPoolImpl : public torch::nn::Cloneable<Derived> {
  class TORCH_API AdaptiveMaxPool1dImpl
      : public AdaptiveMaxPoolImpl<1, ExpandingArray<1>, AdaptiveMaxPool1dImpl> {
   public:
@@ -446,7 +452,7 @@ index 2e05359..b09d5bd 100644
  
    Tensor forward(const Tensor& input);
  
-@@ -292,10 +316,16 @@ class TORCH_API AdaptiveMaxPool2dImpl : public AdaptiveMaxPoolImpl<
+@@ -292,10 +322,16 @@ class TORCH_API AdaptiveMaxPool2dImpl : public AdaptiveMaxPoolImpl<
                                              ExpandingArrayWithOptionalElem<2>,
                                              AdaptiveMaxPool2dImpl> {
   public:
@@ -467,7 +473,7 @@ index 2e05359..b09d5bd 100644
  
    Tensor forward(const Tensor& input);
  
-@@ -329,10 +359,16 @@ class TORCH_API AdaptiveMaxPool3dImpl : public AdaptiveMaxPoolImpl<
+@@ -329,10 +365,16 @@ class TORCH_API AdaptiveMaxPool3dImpl : public AdaptiveMaxPoolImpl<
                                              ExpandingArrayWithOptionalElem<3>,
                                              AdaptiveMaxPool3dImpl> {
   public:
@@ -488,7 +494,7 @@ index 2e05359..b09d5bd 100644
  
    Tensor forward(const Tensor& input);
  
-@@ -390,8 +426,14 @@ class TORCH_API AdaptiveAvgPoolImpl : public torch::nn::Cloneable<Derived> {
+@@ -390,8 +432,14 @@ class TORCH_API AdaptiveAvgPoolImpl : public torch::nn::Cloneable<Derived> {
  class TORCH_API AdaptiveAvgPool1dImpl
      : public AdaptiveAvgPoolImpl<1, ExpandingArray<1>, AdaptiveAvgPool1dImpl> {
   public:
@@ -505,7 +511,7 @@ index 2e05359..b09d5bd 100644
  
    Tensor forward(const Tensor& input);
  };
-@@ -421,10 +463,16 @@ class TORCH_API AdaptiveAvgPool2dImpl : public AdaptiveAvgPoolImpl<
+@@ -421,10 +469,16 @@ class TORCH_API AdaptiveAvgPool2dImpl : public AdaptiveAvgPoolImpl<
                                              ExpandingArrayWithOptionalElem<2>,
                                              AdaptiveAvgPool2dImpl> {
   public:
@@ -526,7 +532,7 @@ index 2e05359..b09d5bd 100644
  
    Tensor forward(const Tensor& input);
  };
-@@ -454,10 +502,16 @@ class TORCH_API AdaptiveAvgPool3dImpl : public AdaptiveAvgPoolImpl<
+@@ -454,10 +508,16 @@ class TORCH_API AdaptiveAvgPool3dImpl : public AdaptiveAvgPoolImpl<
                                              ExpandingArrayWithOptionalElem<3>,
                                              AdaptiveAvgPool3dImpl> {
   public:
@@ -547,7 +553,7 @@ index 2e05359..b09d5bd 100644
  
    Tensor forward(const Tensor& input);
  };
-@@ -503,7 +557,11 @@ class TORCH_API MaxUnpoolImpl : public torch::nn::Cloneable<Derived> {
+@@ -503,7 +563,12 @@ class TORCH_API MaxUnpoolImpl : public torch::nn::Cloneable<Derived> {
  /// ```
  class TORCH_API MaxUnpool1dImpl : public MaxUnpoolImpl<1, MaxUnpool1dImpl> {
   public:
@@ -555,12 +561,13 @@ index 2e05359..b09d5bd 100644
 +  // using MaxUnpoolImpl<1, MaxUnpool1dImpl>::MaxUnpoolImpl;
 +  MaxUnpool1dImpl(ExpandingArray<1> kernel_size)
 +      : MaxUnpool1dImpl(MaxUnpoolOptions<1>(kernel_size)) {}
-+  explicit MaxUnpool1dImpl(const MaxUnpoolOptions<1>& options_);
++  explicit MaxUnpool1dImpl(const MaxUnpoolOptions<1>& options_)
++      : MaxUnpoolImpl<1, MaxUnpool1dImpl>(options_) {}
 +
    Tensor forward(
        const Tensor& input,
        const Tensor& indices,
-@@ -535,7 +593,11 @@ TORCH_MODULE(MaxUnpool1d);
+@@ -535,7 +600,12 @@ TORCH_MODULE(MaxUnpool1d);
  /// ```
  class TORCH_API MaxUnpool2dImpl : public MaxUnpoolImpl<2, MaxUnpool2dImpl> {
   public:
@@ -568,12 +575,13 @@ index 2e05359..b09d5bd 100644
 +  // using MaxUnpoolImpl<2, MaxUnpool2dImpl>::MaxUnpoolImpl;
 +  MaxUnpool2dImpl(ExpandingArray<2> kernel_size)
 +      : MaxUnpool2dImpl(MaxUnpoolOptions<2>(kernel_size)) {}
-+  explicit MaxUnpool2dImpl(const MaxUnpoolOptions<2>& options_);
++  explicit MaxUnpool2dImpl(const MaxUnpoolOptions<2>& options_)
++      : MaxUnpoolImpl<2, MaxUnpool2dImpl>(options_) {}
 +
    Tensor forward(
        const Tensor& input,
        const Tensor& indices,
-@@ -567,7 +629,11 @@ TORCH_MODULE(MaxUnpool2d);
+@@ -567,7 +637,12 @@ TORCH_MODULE(MaxUnpool2d);
  /// ```
  class TORCH_API MaxUnpool3dImpl : public MaxUnpoolImpl<3, MaxUnpool3dImpl> {
   public:
@@ -581,12 +589,13 @@ index 2e05359..b09d5bd 100644
 +  // using MaxUnpoolImpl<3, MaxUnpool3dImpl>::MaxUnpoolImpl;
 +  MaxUnpool3dImpl(ExpandingArray<3> kernel_size)
 +      : MaxUnpool3dImpl(MaxUnpoolOptions<3>(kernel_size)) {}
-+  explicit MaxUnpool3dImpl(const MaxUnpoolOptions<3>& options_);
++  explicit MaxUnpool3dImpl(const MaxUnpoolOptions<3>& options_)
++      : MaxUnpoolImpl<3, MaxUnpool3dImpl>(options_) {}
 +
    Tensor forward(
        const Tensor& input,
        const Tensor& indices,
-@@ -707,7 +773,10 @@ class TORCH_API LPPoolImpl : public torch::nn::Cloneable<Derived> {
+@@ -707,7 +782,11 @@ class TORCH_API LPPoolImpl : public torch::nn::Cloneable<Derived> {
  /// ```
  class TORCH_API LPPool1dImpl : public LPPoolImpl<1, LPPool1dImpl> {
   public:
@@ -594,11 +603,12 @@ index 2e05359..b09d5bd 100644
 +  // using LPPoolImpl<1, LPPool1dImpl>::LPPoolImpl;
 +  LPPool1dImpl(double norm_type, ExpandingArray<1> kernel_size)
 +      : LPPool1dImpl(LPPoolOptions<1>(norm_type, kernel_size)) {}
-+  explicit LPPool1dImpl(const LPPoolOptions<1>& options_);
++  explicit LPPool1dImpl(const LPPoolOptions<1>& options_)
++      : LPPoolImpl<1, LPPool1dImpl>(options_) {}
  
    Tensor forward(const Tensor& input);
  };
-@@ -735,7 +804,10 @@ TORCH_MODULE(LPPool1d);
+@@ -735,7 +814,11 @@ TORCH_MODULE(LPPool1d);
  /// ```
  class TORCH_API LPPool2dImpl : public LPPoolImpl<2, LPPool2dImpl> {
   public:
@@ -606,11 +616,12 @@ index 2e05359..b09d5bd 100644
 +  // using LPPoolImpl<2, LPPool2dImpl>::LPPoolImpl;
 +  LPPool2dImpl(double norm_type, ExpandingArray<2> kernel_size)
 +      : LPPool2dImpl(LPPoolOptions<2>(norm_type, kernel_size)) {}
-+  explicit LPPool2dImpl(const LPPoolOptions<2>& options_);
++  explicit LPPool2dImpl(const LPPoolOptions<2>& options_)
++      : LPPoolImpl<2, LPPool2dImpl>(options_) {}
  
    Tensor forward(const Tensor& input);
  };
-@@ -763,7 +835,10 @@ TORCH_MODULE(LPPool2d);
+@@ -763,7 +846,11 @@ TORCH_MODULE(LPPool2d);
  /// ```
  class TORCH_API LPPool3dImpl : public LPPoolImpl<3, LPPool3dImpl> {
   public:
@@ -618,7 +629,8 @@ index 2e05359..b09d5bd 100644
 +  // using LPPoolImpl<3, LPPool3dImpl>::LPPoolImpl;
 +  LPPool3dImpl(double norm_type, ExpandingArray<3> kernel_size)
 +      : LPPool3dImpl(LPPoolOptions<3>(norm_type, kernel_size)) {}
-+  explicit LPPool3dImpl(const LPPoolOptions<3>& options_);
++  explicit LPPool3dImpl(const LPPoolOptions<3>& options_)
++      : LPPoolImpl<3, LPPool3dImpl>(options_) {}
  
    Tensor forward(const Tensor& input);
  };

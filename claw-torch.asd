@@ -33,3 +33,8 @@
   :depends-on (:claw-torch)
   :pathname "example/"
   :components ((:file "example")))
+
+
+#+unix
+(setf (uiop:getenv "LD_LIBRARY_PATH")
+      (directory-namestring (merge-pathnames "libtorch/lib/" *load-pathname*)))

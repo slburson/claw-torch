@@ -29,10 +29,9 @@ endif()
 # MAIN
 #
 SET(PYTORCH_BIN_INSTALL_PREFIX "../../libtorch")
+# find_package(Torch REQUIRED)
 
-# The generated adapter refers to internal names from the Clang headers.
-# We need to list the Clang include directories explicitly below,
-# and also pass `-nostdinc++'.
+# Not sure whether this is still needed
 SET(CMAKE_C_COMPILER clang)
 SET(CMAKE_CXX_COMPILER clang++)
 
@@ -46,12 +45,7 @@ set_source_files_properties(${ADAPTER} PROPERTIES LANGUAGE CXX)
 target_include_directories(${TARGET}
   PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../"
          "${PYTORCH_BIN_INSTALL_PREFIX}/include/"
-         "${PYTORCH_BIN_INSTALL_PREFIX}/include/torch/csrc/api/include/"
-	 # FIXME: Locate LLVM dynamically
-	 "/usr/local/llvm/include/x86_64-unknown-linux-gnu/c++/v1/"
-	 "/usr/local/llvm/include/c++/v1/")
-
-target_compile_options(${TARGET} PUBLIC -nostdinc++)
+         "${PYTORCH_BIN_INSTALL_PREFIX}/include/torch/csrc/api/include/")
 
 target_link_directories(${TARGET}
   PUBLIC "${PYTORCH_BIN_INSTALL_PREFIX}/lib/")
