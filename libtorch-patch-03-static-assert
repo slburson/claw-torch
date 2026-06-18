@@ -1,0 +1,18 @@
+diff --git a/include/torch/csrc/api/include/torch/nn/pimpl.h b/include/torch/csrc/api/include/torch/nn/pimpl.h
+index b1c1cc2..3c8c51b 100644
+--- a/include/torch/csrc/api/include/torch/nn/pimpl.h
++++ b/include/torch/csrc/api/include/torch/nn/pimpl.h
+@@ -42,11 +42,13 @@ class ModuleHolder : torch::detail::ModuleHolderIndicator {
+   /// classes in C++ that constructors (or any methods) are only compiled when
+   /// actually used.
+   ModuleHolder() : impl_(default_construct()) {
++    /* Claw can't deal with this
+     static_assert(
+         std::is_default_constructible_v<Contained>,
+         "You are trying to default construct a module which has "
+         "no default constructor. Use = nullptr to give it the empty state "
+         "(e.g. `Linear linear = nullptr;` instead of `Linear linear;`).");
++    */
+   }
+ 
+   /// Constructs the `ModuleHolder` with an empty contained value. Access to

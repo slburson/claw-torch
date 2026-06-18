@@ -4,6 +4,7 @@
                             "ATen/ATen.h"
                             "clawed.h")
                   (:includes :src-includes :torch-root-includes :torch-includes)
+		  (:system-include-type :gcc)
                   (:targets ((:and :x86-64 :linux) "x86_64-unknown-linux-gnu"))
                   (:persistent t)
                   (:language :c++)

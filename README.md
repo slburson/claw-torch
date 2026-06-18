@@ -10,7 +10,9 @@ for):
 root directory of your cloned repo; it will create a directory `libtorch`
 - `cd` into that `libtorch` directory
 - `% patch -p1 <../libtorch-patch-00-auto-return-types`
-- `% patch -p1 <../libtorch-patch-01-inherited-constructors`
+- [patch 1 is no longer needed]
+- `% patch -p2 <../libtorch-patch-02-unlinkable-functions`
+- `% patch -p1 <../libtorch-patch-03-static-assert`
 - clone [Claw](https://github.com/borodust/claw),
   [cl-resect](https://github.com/borodust/cl-libresect), and
   [libresect](https://github.com/borodust/libresect)
