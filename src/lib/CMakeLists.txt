@@ -28,8 +28,6 @@ endif()
 #
 # MAIN
 #
-SET(PYTORCH_BIN_INSTALL_PREFIX "../../libtorch")
-# find_package(Torch REQUIRED)
 
 # Not sure whether this is still needed
 SET(CMAKE_C_COMPILER clang)

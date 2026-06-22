@@ -21,22 +21,19 @@ root directory of your cloned repo; it will create a directory `libtorch`
   `~/quicklisp/local-projects/` or by setting `asdf:*central-registry*`
 - start Lisp (currently tested on SBCL 2.6.0 only)
 - `> (ql:quickload "claw")`
-- `> (ql:quickload "claw-torch")`
+- `> (ql:quickload "claw-torch/wrapper")`
 - `> (sb-alien:load-shared-object "/path/to/libresect.so")`
 - open `src/claw.lisp` (in this repo) in your editor; if needed, fix the `:targets`
   option; compile the `claw:defwrapper` form
 - `> (claw.wrapper:generate-wrapper :claw-torch)` (takes almost an hour; ignore errors
   from `prepared_implicit.h`)
 - `% cd .../src/lib` (within claw-torch)
-- Currently, `CMakeLists.txt` assumes LLVM is in `/usr/local/llvm`.  If yours isn't,
-either symlink it from there or edit `CMakeLists.txt`.
-- `% mkdir build`
-- `% cd build`
-- `% cmake ..`
-- `% cmake --build .`
+- `% bash build.sh`
 
-If that succeeds, it will produce `src/lib/build/libtorch.clawed.so`.  The other output
-file is `bindings/_target_.lisp`.
+If that succeeds, it will produce `src/lib/build/clawed/libtorch.clawed.so`.  The other output
+file is `bindings/_target_.lisp`, which can be compiled and loaded by:
+
+- `> (ql:quickload "claw-torch")
 
 (These directions are from memory and are untested; don't be too surprised if there's
 something missing, but if so, please file an issue.)
