@@ -6,7 +6,7 @@ LIBRARY_DIR=$WORK_DIR/torch/
 BUILD_DIR="$WORK_DIR/build/$REST_ARGS/"
 CLAWED_BUILD_DIR=$BUILD_DIR/clawed/
 PYTORCH_BUILD_DIR=$BUILD_DIR/torch/
-PYTORCH_BIN_DIR=$WORK_DIR/torch-bin/
+PYTORCH_BIN_DIR=$WORK_DIR/../../libtorch/
 
 CPU_COUNT=`nproc --all`
 CPU_FOR_BUILD=$(expr $CPU_COUNT - 1)
@@ -32,4 +32,7 @@ function build_clawed {
     cmake --build .
 }
 
-build_pytorch && build_clawed
+# You can build PyTorch if you want, but I've just been using a downloaded LibTorch
+# binary distribution. -- SLB
+# build_pytorch && build_clawed
+build_clawed

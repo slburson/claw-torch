@@ -1,3 +1,0 @@
-[submodule "src/lib/torch"]
-	path = src/lib/torch
-	url = https://github.com/borodust/pytorch.git

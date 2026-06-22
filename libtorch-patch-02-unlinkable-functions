@@ -1,0 +1,48 @@
+diff --git a/include/ATen/TensorIterator.h b/include/ATen/TensorIterator.h
+index 44fe79d..38a1f53 100644
+--- a/include/ATen/TensorIterator.h
++++ b/include/ATen/TensorIterator.h
+@@ -466,7 +466,8 @@ struct TORCH_API TensorIteratorBase : public impl::MetaBase {
+ 
+   /// Reapply same re-ordering as it is done by reorder_dimensions. This can
+   /// only be called *before* coalesce_dimensions() is called.
+-  DimVector apply_perm_and_mul(IntArrayRef input, int mul) const;
++  // For Claw-Torch: this is unimplemented.
++  // DimVector apply_perm_and_mul(IntArrayRef input, int mul) const;
+ 
+   /// Helper functions for CPU iteration
+   StrideVector get_dim_strides(int dim) const;
+diff --git a/include/torch/csrc/api/include/torch/nn/modules/_functions.h b/include/torch/csrc/api/include/torch/nn/modules/_functions.h
+index 5dad23c..4aaf8d6 100644
+--- a/include/torch/csrc/api/include/torch/nn/modules/_functions.h
++++ b/include/torch/csrc/api/include/torch/nn/modules/_functions.h
+@@ -10,6 +10,7 @@ namespace torch::nn::functions {
+ 
+ class CrossMapLRN2d : public torch::autograd::Function<CrossMapLRN2d> {
+  public:
++/* For Claw-Torch: these are unexported.
+   static torch::autograd::Variable forward(
+       torch::autograd::AutogradContext* ctx,
+       const torch::autograd::Variable& input,
+@@ -18,6 +19,7 @@ class CrossMapLRN2d : public torch::autograd::Function<CrossMapLRN2d> {
+   static torch::autograd::variable_list backward(
+       torch::autograd::AutogradContext* ctx,
+       torch::autograd::variable_list grad_output);
++*/
+ };
+ 
+ } // namespace torch::nn::functions
+diff --git a/include/torch/custom_class.h b/include/torch/custom_class.h
+index 0ba7fbf..f257225 100644
+--- a/include/torch/custom_class.h
++++ b/include/torch/custom_class.h
+@@ -492,7 +492,8 @@ inline class_<CurClass> Library::class_(const std::string& className) {
+   return torch::class_<CurClass>(*ns_, className);
+ }
+ 
+-const std::unordered_set<std::string> getAllCustomClassesNames();
++// For Claw-Torch: this is unexported.
++// const std::unordered_set<std::string> getAllCustomClassesNames();
+ 
+ template <class CurClass>
+ inline class_<CurClass> Library::class_(detail::SelectiveStr<true> className) {

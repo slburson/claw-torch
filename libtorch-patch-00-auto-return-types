@@ -1,0 +1,61 @@
+diff --git a/include/torch/csrc/api/include/torch/nn/options/conv.h b/include/torch/csrc/api/include/torch/nn/options/conv.h
+index bd7445e..5915016 100644
+--- a/include/torch/csrc/api/include/torch/nn/options/conv.h
++++ b/include/torch/csrc/api/include/torch/nn/options/conv.h
+@@ -58,10 +58,10 @@ struct ConvNdOptions {
+   /// For a `D`-dim convolution, must be a single number or a list of `D`
+   /// numbers.
+   /// This parameter __can__ be changed after construction.
+-  TORCH_ARG(padding_t, padding) = 0;
++  TORCH_ARG(conv_padding_t<D>, padding) = 0;
+ 
+  public:
+-  auto padding(std::initializer_list<int64_t> il) {
++  auto padding(std::initializer_list<int64_t> il) -> decltype(*this) {
+     return padding(IntArrayRef{il});
+   }
+ 
+@@ -137,10 +137,10 @@ struct ConvOptions {
+   /// For a `D`-dim convolution, must be a single number or a list of `D`
+   /// numbers.
+   /// This parameter __can__ be changed after construction.
+-  TORCH_ARG(padding_t, padding) = 0;
++  TORCH_ARG(detail::conv_padding_t<D>, padding) = 0;
+ 
+  public:
+-  auto padding(std::initializer_list<int64_t> il) {
++  auto padding(std::initializer_list<int64_t> il) -> decltype(*this) {
+     return padding(IntArrayRef{il});
+   }
+ 
+@@ -160,7 +160,7 @@ struct ConvOptions {
+ 
+   /// Accepted values `torch::kZeros`, `torch::kReflect`, `torch::kReplicate` or
+   /// `torch::kCircular`. Default: `torch::kZeros`
+-  TORCH_ARG(padding_mode_t, padding_mode) = torch::kZeros;
++  TORCH_ARG(detail::conv_padding_mode_t, padding_mode) = torch::kZeros;
+ };
+ 
+ /// `ConvOptions` specialized for the `Conv1d` module.
+@@ -207,10 +207,10 @@ struct ConvFuncOptions {
+   /// Implicit paddings on both sides of the input.
+   /// For a `D`-dim convolution, must be a single number or a list of `D`
+   /// numbers.
+-  TORCH_ARG(padding_t, padding) = 0;
++  TORCH_ARG(torch::nn::detail::conv_padding_t<D>, padding) = 0;
+ 
+  public:
+-  auto padding(std::initializer_list<int64_t> il) {
++  auto padding(std::initializer_list<int64_t> il) -> decltype(*this) {
+     return padding(IntArrayRef{il});
+   }
+ 
+@@ -315,7 +315,7 @@ struct ConvTransposeOptions {
+ 
+   /// Accepted values `torch::kZeros`, `torch::kReflect`, `torch::kReplicate` or
+   /// `torch::kCircular`. Default: `torch::kZeros`
+-  TORCH_ARG(padding_mode_t, padding_mode) = torch::kZeros;
++  TORCH_ARG(detail::conv_padding_mode_t, padding_mode) = torch::kZeros;
+ };
+ 
+ /// `ConvTransposeOptions` specialized for the `ConvTranspose1d` module.
